@@ -13,8 +13,6 @@ sc = SparkContext("local", "pca-app")
 
 sqlContext = SQLContext(sc)
 
-normalizer = Normalizer()
-
 df = sqlContext.read.json("/tmp/iris.json")
 vecAssembler = VectorAssembler(inputCols=["sepal_width", "sepal_length", "petal_width", "petal_length"], outputCol="features")
 
@@ -25,7 +23,6 @@ pipeline = Pipeline(stages=[vecAssembler, pca])
 model = pipeline.fit(df)
 xy = model.transform(df).select("pcaFeatures").map(lambda row: [row[0][0], row[0][1]]).collect()
 
-# convert to numpy array so we can easily transpose later
 xy = np.array(xy)
 
 x=np.array(zip(*xy)[0])
@@ -38,7 +35,6 @@ plt.hexbin(x,y,  gridsize=30)
 plt.show()
 
 nbins = 55
-
 
 k = kde.gaussian_kde(np.transpose(xy))
 xi, yi = np.mgrid[x.min():x.max():nbins*1j, y.min():y.max():nbins*1j]
