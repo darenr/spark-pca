@@ -28,8 +28,8 @@ xy = np.array(xy)
 x=np.array(zip(*xy)[0])
 y=np.array(zip(*xy)[1])
 
-plt.scatter(x,y)
-plt.show()
+#plt.scatter(x,y)
+#plt.show()
 
 plt.hexbin(x,y,  gridsize=30)
 plt.show()
